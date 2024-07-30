@@ -143,9 +143,17 @@
                     <li><strong>Iterations (for PBKDF2):</strong> 1000</li>
                 </ul>
             </p>
+            <h2>Security and Privacy</h2>
+            <p>
+                This tool is designed with security and privacy in mind. All encryption and decryption processes occur locally in your browser, which means that no data is sent to or stored on any server. Your plaintext and encrypted data remain entirely within your device. This design ensures that your sensitive information is not exposed to external threats or unauthorized access.
+            </p>
+            <p>
+                <strong>Key Security:</strong> The encryption key is derived directly in your browser using your password and a randomly generated salt, ensuring that it is unique for each encryption operation. This process uses a high level of security with 1000 iterations to enhance resistance against brute-force attacks.
+            </p>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const passwordInput = document.getElementById('password');
