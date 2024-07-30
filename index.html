@@ -31,7 +31,7 @@
         
         .form-group {
             margin-bottom: 15px;
-            position: relative;
+            position: relative; /* Ensure that the button can be positioned absolutely within this container */
         }
         
         label {
@@ -40,7 +40,7 @@
         }
         
         textarea, input[type="password"], input[type="text"] {
-            width: 100%;
+            width: calc(100% - 50px); /* Adjust width to account for the button */
             padding: 10px;
             box-sizing: border-box;
         }
@@ -175,12 +175,10 @@
             const outputText = document.getElementById('outputText');
             const encryptButton = document.getElementById('encryptButton');
             const decryptButton = document.getElementById('decryptButton');
-            const showHideButton = document.getElementById('showHideButton');
             const aboutLink = document.getElementById('aboutLink');
             const infoModal = document.getElementById('infoModal');
             const closeModal = document.querySelector('.close');
-
-            let isPasswordVisible = false;
+            const showHideButton = document.getElementById('showHideButton');
 
             encryptButton.addEventListener('click', () => {
                 const password = passwordInput.value;
@@ -202,12 +200,6 @@
                 outputText.value = decryptedText;
             });
 
-            showHideButton.addEventListener('click', () => {
-                isPasswordVisible = !isPasswordVisible;
-                passwordInput.type = isPasswordVisible ? 'text' : 'password';
-                showHideButton.textContent = isPasswordVisible ? '🙈' : '👁️';
-            });
-
             aboutLink.addEventListener('click', (e) => {
                 e.preventDefault();
                 infoModal.style.display = "block";
@@ -220,6 +212,16 @@
             window.addEventListener('click', (e) => {
                 if (e.target == infoModal) {
                     infoModal.style.display = "none";
+                }
+            });
+
+            showHideButton.addEventListener('click', () => {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    showHideButton.textContent = '🙈'; // Update to a "hide" icon
+                } else {
+                    passwordInput.type = 'password';
+                    showHideButton.textContent = '👁️'; // Update to a "show" icon
                 }
             });
 
