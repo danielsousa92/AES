@@ -8,12 +8,20 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
+            flex-direction: column;
+        }
+        
+        .main-container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            justify-content: space-between;
+            gap: 20px;
         }
         
         .container, .info-container {
@@ -21,9 +29,15 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 400px;
-            max-width: 100%;
-            margin-bottom: 20px;
+            flex: 1;
+        }
+        
+        .container {
+            max-width: 400px;
+        }
+        
+        .info-container {
+            max-width: 600px;
         }
         
         h1, h2 {
@@ -121,45 +135,47 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <h1>Encrypt/Decrypt Text</h1>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password">
+    <div class="main-container">
+        <div class="container">
+            <h1>Encrypt/Decrypt Text</h1>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password">
+            </div>
+            <div class="form-group">
+                <label for="inputText">Input Text:</label>
+                <textarea id="inputText" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <button id="encryptButton">Encrypt</button>
+                <button id="decryptButton">Decrypt</button>
+            </div>
+            <div class="form-group">
+                <label for="outputText">Output Text:</label>
+                <textarea id="outputText" rows="4" readonly></textarea>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="inputText">Input Text:</label>
-            <textarea id="inputText" rows="4"></textarea>
+        <div class="info-container">
+            <h2>How It Works</h2>
+            <p>
+                This tool allows you to encrypt and decrypt text using the Advanced Encryption Standard (AES) algorithm, a widely-used symmetric encryption algorithm.
+            </p>
+            <p>
+                <strong>Encryption:</strong> When you encrypt text, the tool generates a random salt and initialization vector (IV). The password you provide is used to derive a key through the PBKDF2 (Password-Based Key Derivation Function 2) algorithm, which involves hashing the password with the salt and performing multiple iterations to produce a secure key. The AES algorithm then encrypts the text using this key and IV. The encrypted result is a combination of the salt, IV, and the encrypted text.
+            </p>
+            <p>
+                <strong>Decryption:</strong> To decrypt text, the tool extracts the salt and IV from the encrypted text. It then uses the same password to derive the key through PBKDF2, and the AES algorithm decrypts the text using this key and IV.
+            </p>
+            <p>
+                <strong>Encryption Details:</strong> 
+                <ul>
+                    <li><strong>Algorithm:</strong> AES (Advanced Encryption Standard)</li>
+                    <li><strong>Key Size:</strong> 256 bits (32 bytes)</li>
+                    <li><strong>IV Size:</strong> 128 bits (16 bytes)</li>
+                    <li><strong>Iterations (for PBKDF2):</strong> 1000</li>
+                </ul>
+            </p>
         </div>
-        <div class="form-group">
-            <button id="encryptButton">Encrypt</button>
-            <button id="decryptButton">Decrypt</button>
-        </div>
-        <div class="form-group">
-            <label for="outputText">Output Text:</label>
-            <textarea id="outputText" rows="4" readonly></textarea>
-        </div>
-    </div>
-    <div class="info-container">
-        <h2>How It Works</h2>
-        <p>
-            This tool allows you to encrypt and decrypt text using the Advanced Encryption Standard (AES) algorithm, a widely-used symmetric encryption algorithm.
-        </p>
-        <p>
-            <strong>Encryption:</strong> When you encrypt text, the tool generates a random salt and initialization vector (IV). The password you provide is used to derive a key through the PBKDF2 (Password-Based Key Derivation Function 2) algorithm, which involves hashing the password with the salt and performing multiple iterations to produce a secure key. The AES algorithm then encrypts the text using this key and IV. The encrypted result is a combination of the salt, IV, and the encrypted text.
-        </p>
-        <p>
-            <strong>Decryption:</strong> To decrypt text, the tool extracts the salt and IV from the encrypted text. It then uses the same password to derive the key through PBKDF2, and the AES algorithm decrypts the text using this key and IV.
-        </p>
-        <p>
-            <strong>Encryption Details:</strong> 
-            <ul>
-                <li><strong>Algorithm:</strong> AES (Advanced Encryption Standard)</li>
-                <li><strong>Key Size:</strong> 256 bits (32 bytes)</li>
-                <li><strong>IV Size:</strong> 128 bits (16 bytes)</li>
-                <li><strong>Iterations (for PBKDF2):</strong> 1000</li>
-            </ul>
-        </p>
     </div>
 </body>
 </html>
