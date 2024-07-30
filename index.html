@@ -162,6 +162,15 @@
             <p>
                 <strong>Key Security:</strong> The encryption key is derived directly in your browser using your password and a randomly generated salt, ensuring that it is unique for each encryption operation. This process uses a high level of security with 1000 iterations to enhance resistance against brute-force attacks.
             </p>
+            <h2>How to Maximize Security</h2>
+            <p>
+                To ensure the highest level of security when using this tool, follow these guidelines:
+            </p>
+            <ul>
+                <li><strong>Use a Strong Password:</strong> Choose a long, complex password that includes a mix of uppercase and lowercase letters, numbers, and special characters. Avoid using easily guessable passwords or common phrases.</li>
+                <li><strong>Keep Your Password Confidential:</strong> While the encrypted message is secure, the password used to encrypt and decrypt the data should be kept private. Do not share your password with anyone who should not have access to your encrypted messages.</li>
+                <li><strong>Share Passwords Securely:</strong> When sharing passwords, use secure methods such as encrypted communication channels or secure messaging platforms. For offline exchanges, consider sharing passwords in person or through other secure methods to prevent unauthorized access.</li>
+            </ul>
         </div>
     </div>
 
@@ -225,30 +234,18 @@
             });
 
             function encrypt(text, password) {
-                const salt = CryptoJS.lib.WordArray.random(128 / 8);
-                const key = CryptoJS.PBKDF2(password, salt, {
-                    keySize: 256 / 32,
-                    iterations: 1000
-                });
-
-                const iv = CryptoJS.lib.WordArray.random(128 / 8);
+                const salt = CryptoJS.lib.WordArray.random(128/8);
+                const iv = CryptoJS.lib.WordArray.random(128/8);
+                const key = CryptoJS.PBKDF2(password, salt, { keySize: 256/32, iterations: 1000 });
                 const encrypted = CryptoJS.AES.encrypt(text, key, { iv: iv });
-
-                // Combine everything: salt + iv + ciphertext
-                const result = salt.toString() + iv.toString() + encrypted.toString();
-                return result;
+                return salt.toString() + iv.toString() + encrypted.toString();
             }
 
-            function decrypt(ciphertext, password) {
-                const salt = CryptoJS.enc.Hex.parse(ciphertext.substr(0, 32));
-                const iv = CryptoJS.enc.Hex.parse(ciphertext.substr(32, 32));
-                const encrypted = ciphertext.substr(64);
-
-                const key = CryptoJS.PBKDF2(password, salt, {
-                    keySize: 256 / 32,
-                    iterations: 1000
-                });
-
+            function decrypt(encryptedText, password) {
+                const salt = CryptoJS.enc.Hex.parse(encryptedText.substr(0, 32));
+                const iv = CryptoJS.enc.Hex.parse(encryptedText.substr(32, 32));
+                const encrypted = encryptedText.substring(64);
+                const key = CryptoJS.PBKDF2(password, salt, { keySize: 256/32, iterations: 1000 });
                 const decrypted = CryptoJS.AES.decrypt(encrypted, key, { iv: iv });
                 return decrypted.toString(CryptoJS.enc.Utf8);
             }
