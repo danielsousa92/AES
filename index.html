@@ -31,7 +31,6 @@
         
         .form-group {
             margin-bottom: 15px;
-            position: relative; /* Ensure that the button can be positioned absolutely within this container */
         }
         
         label {
@@ -39,8 +38,8 @@
             margin-bottom: 5px;
         }
         
-        textarea, input[type="password"], input[type="text"] {
-            width: calc(100% - 50px); /* Adjust width to account for the button */
+        textarea, input[type="password"] {
+            width: 100%;
             padding: 10px;
             box-sizing: border-box;
         }
@@ -97,18 +96,6 @@
             text-decoration: none;
             cursor: pointer;
         }
-
-        .show-hide-btn {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border: none;
-            background: none;
-            cursor: pointer;
-            font-size: 18px;
-            color: #007bff;
-        }
     </style>
 </head>
 <body>
@@ -117,7 +104,6 @@
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password">
-            <button id="showHideButton" class="show-hide-btn">👁️</button>
         </div>
         <div class="form-group">
             <label for="inputText">Input Text:</label>
@@ -178,7 +164,6 @@
             const aboutLink = document.getElementById('aboutLink');
             const infoModal = document.getElementById('infoModal');
             const closeModal = document.querySelector('.close');
-            const showHideButton = document.getElementById('showHideButton');
 
             encryptButton.addEventListener('click', () => {
                 const password = passwordInput.value;
@@ -212,16 +197,6 @@
             window.addEventListener('click', (e) => {
                 if (e.target == infoModal) {
                     infoModal.style.display = "none";
-                }
-            });
-
-            showHideButton.addEventListener('click', () => {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    showHideButton.textContent = '🙈'; // Update to a "hide" icon
-                } else {
-                    passwordInput.type = 'password';
-                    showHideButton.textContent = '👁️'; // Update to a "show" icon
                 }
             });
 
