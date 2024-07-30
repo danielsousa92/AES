@@ -13,35 +13,19 @@
             height: 100vh;
             background-color: #f0f0f0;
             margin: 0;
-            flex-direction: column;
         }
         
-        .main-container {
-            display: flex;
-            width: 90%;
-            max-width: 1200px;
-            justify-content: space-between;
-            gap: 20px;
-        }
-        
-        .container, .info-container {
+        .container {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            flex: 1;
-        }
-        
-        .container {
-            max-width: 400px;
-        }
-        
-        .info-container {
-            max-width: 600px;
-        }
-        
-        h1, h2 {
+            width: 400px;
+            max-width: 100%;
             text-align: center;
+        }
+        
+        h1 {
             margin-bottom: 20px;
         }
         
@@ -73,8 +57,95 @@
         #outputText {
             background-color: #e9e9e9;
         }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Encrypt/Decrypt Text</h1>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password">
+        </div>
+        <div class="form-group">
+            <label for="inputText">Input Text:</label>
+            <textarea id="inputText" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <button id="encryptButton">Encrypt</button>
+            <button id="decryptButton">Decrypt</button>
+        </div>
+        <div class="form-group">
+            <label for="outputText">Output Text:</label>
+            <textarea id="outputText" rows="4" readonly></textarea>
+        </div>
+        <a href="#" id="aboutLink">About this tool</a>
+    </div>
+
+    <!-- The Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>How It Works</h2>
+            <p>
+                This tool allows you to encrypt and decrypt text using the Advanced Encryption Standard (AES) algorithm, a widely-used symmetric encryption algorithm.
+            </p>
+            <p>
+                <strong>Encryption:</strong> When you encrypt text, the tool generates a random salt and initialization vector (IV). The password you provide is used to derive a key through the PBKDF2 (Password-Based Key Derivation Function 2) algorithm, which involves hashing the password with the salt and performing multiple iterations to produce a secure key. The AES algorithm then encrypts the text using this key and IV. The encrypted result is a combination of the salt, IV, and the encrypted text.
+            </p>
+            <p>
+                <strong>Decryption:</strong> To decrypt text, the tool extracts the salt and IV from the encrypted text. It then uses the same password to derive the key through PBKDF2, and the AES algorithm decrypts the text using this key and IV.
+            </p>
+            <p>
+                <strong>Encryption Details:</strong> 
+                <ul>
+                    <li><strong>Algorithm:</strong> AES (Advanced Encryption Standard)</li>
+                    <li><strong>Key Size:</strong> 256 bits (32 bytes)</li>
+                    <li><strong>IV Size:</strong> 128 bits (16 bytes)</li>
+                    <li><strong>Iterations (for PBKDF2):</strong> 1000</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const passwordInput = document.getElementById('password');
@@ -82,6 +153,9 @@
             const outputText = document.getElementById('outputText');
             const encryptButton = document.getElementById('encryptButton');
             const decryptButton = document.getElementById('decryptButton');
+            const aboutLink = document.getElementById('aboutLink');
+            const infoModal = document.getElementById('infoModal');
+            const closeModal = document.querySelector('.close');
 
             encryptButton.addEventListener('click', () => {
                 const password = passwordInput.value;
@@ -101,6 +175,21 @@
                 }
                 const decryptedText = decrypt(inputText.value, password);
                 outputText.value = decryptedText;
+            });
+
+            aboutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                infoModal.style.display = "block";
+            });
+
+            closeModal.addEventListener('click', () => {
+                infoModal.style.display = "none";
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target == infoModal) {
+                    infoModal.style.display = "none";
+                }
             });
 
             function encrypt(text, password) {
@@ -133,49 +222,5 @@
             }
         });
     </script>
-</head>
-<body>
-    <div class="main-container">
-        <div class="container">
-            <h1>Encrypt/Decrypt Text</h1>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password">
-            </div>
-            <div class="form-group">
-                <label for="inputText">Input Text:</label>
-                <textarea id="inputText" rows="4"></textarea>
-            </div>
-            <div class="form-group">
-                <button id="encryptButton">Encrypt</button>
-                <button id="decryptButton">Decrypt</button>
-            </div>
-            <div class="form-group">
-                <label for="outputText">Output Text:</label>
-                <textarea id="outputText" rows="4" readonly></textarea>
-            </div>
-        </div>
-        <div class="info-container">
-            <h2>How It Works</h2>
-            <p>
-                This tool allows you to encrypt and decrypt text using the Advanced Encryption Standard (AES) algorithm, a widely-used symmetric encryption algorithm.
-            </p>
-            <p>
-                <strong>Encryption:</strong> When you encrypt text, the tool generates a random salt and initialization vector (IV). The password you provide is used to derive a key through the PBKDF2 (Password-Based Key Derivation Function 2) algorithm, which involves hashing the password with the salt and performing multiple iterations to produce a secure key. The AES algorithm then encrypts the text using this key and IV. The encrypted result is a combination of the salt, IV, and the encrypted text.
-            </p>
-            <p>
-                <strong>Decryption:</strong> To decrypt text, the tool extracts the salt and IV from the encrypted text. It then uses the same password to derive the key through PBKDF2, and the AES algorithm decrypts the text using this key and IV.
-            </p>
-            <p>
-                <strong>Encryption Details:</strong> 
-                <ul>
-                    <li><strong>Algorithm:</strong> AES (Advanced Encryption Standard)</li>
-                    <li><strong>Key Size:</strong> 256 bits (32 bytes)</li>
-                    <li><strong>IV Size:</strong> 128 bits (16 bytes)</li>
-                    <li><strong>Iterations (for PBKDF2):</strong> 1000</li>
-                </ul>
-            </p>
-        </div>
-    </div>
 </body>
 </html>
